@@ -25,7 +25,7 @@ const mutations = {
     state.todos.push(todo)
   },
   removeTodo (state, todo) {
-    state.todos.splice(state.todos.indexOf(todo), 1)
+    state.todos = state.todos.filter(item => item.uid !== todo.uid)
   },
   editTodo (state, { todo, text = todo.text, done = todo.done }) {
     todo.text = text
@@ -45,7 +45,7 @@ const actions = {
     store.commit('removeTodo', todo)
   },
   toggleTodo (store, todo) {
-    store.commit('editTodo', { todo, done: !!!todo.done })
+    store.commit('editTodo', { todo, done: todo.done })
   },
   editTodo (store, data) {
     store.commit('editTodo', { todo: data.todo, text: data.value })

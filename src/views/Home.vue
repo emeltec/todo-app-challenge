@@ -64,56 +64,7 @@
           </v-btn-toggle>
         </v-card-actions>
         <v-list class="pa-0">
-          <template v-for="todo in filteredTodos">
-            <v-divider :key="`${todo.uid}-divider`"></v-divider>
-            <v-list-tile :key="todo.uid" class="todo-item" :class="{ 'editing': editing }">
-              <v-list-tile-action>
-                <v-checkbox
-                  :input-value="todo.done"
-                  @change="toggleTodo(todo)"
-                  color="primary"
-                  v-if="!!!editing"
-                ></v-checkbox>
-                <v-icon
-                  color="primary"
-                  v-else
-                >edit</v-icon>
-              </v-list-tile-action>
-              <template v-if="!!!editing">
-                <v-list-tile-content
-                  :class="{ 'primary--text': todo.done }"
-                  @dblclick="editing = true"
-                >
-                  {{ todo.text }}
-                </v-list-tile-content>
-                <v-list-tile-action>
-                  <v-btn
-                    @click="removeTodo(todo)"
-                    color="red lighten-3"
-                    flat
-                    icon
-                  >
-                    <v-icon>close</v-icon>
-                  </v-btn>
-                </v-list-tile-action>
-              </template>
-              <v-text-field
-                :value="todo.text"
-                @blur="doneEdit"
-                @keyup.enter="doneEdit"
-                @keyup.esc="cancelEdit"
-                clearable
-                color="primary"
-                flat
-                hide-details
-                maxlength="1023"
-                ref="input"
-                solo
-                v-else
-                v-focus="editing"
-              ></v-text-field>
-            </v-list-tile>
-          </template>
+          <Todo v-for="todo in filteredTodos" :key="todo.uid" :todo="todo" />
         </v-list>
       </v-card>
       <v-btn
@@ -137,15 +88,15 @@
 
 <script>
 import vuex from 'vuex'
+import Todo from './components/Todo.vue'
 
-var filters = {
+const filters = {
   all: function (todos) {
     return todos
   },
   active: function (todos) {
     return todos.filter(function (todo) {
-      console.log('INGRESÓ A ACTIVE')
-      return !!!todo.done
+      return !todo.done
     })
   },
   completed: function (todos) {
@@ -156,7 +107,6 @@ var filters = {
 }
 
 function filterFunction (n, w) {
-  console.log('holaaa')
   if (n === 1) {
     return w
   } else {
@@ -165,6 +115,9 @@ function filterFunction (n, w) {
 }
 
 export default {
+  components: {
+    Todo
+  },
   props: ['filter'],
   data () {
     return {
@@ -172,15 +125,7 @@ export default {
       filters: filters,
       visibility: this.filter,
       editing: false,
-    }
-  },
-  directives: {
-    focus (el, value, context) {
-      if (value.value) {
-        context.context.$nextTick(function () {
-          return context.context.$refs.input.focus()
-        })
-      }
+      todoEditing: {}
     }
   },
   computed: {
@@ -209,6 +154,7 @@ export default {
       'removeTodo',
       'toggleTodo'
     ]),
+
     addTodo () {
       var text = this.newTodo.trim()
       if (text) {
@@ -216,26 +162,9 @@ export default {
       }
       this.newTodo = ''
     },
-    doneEdit (e) {
-      var value = e.target.value.trim()
-      var todo = this.todo
-      if (!!!value) {
-        this.removeTodo(todo)
-      } else if (this.editing) {
-        this.editTodo({
-          todo,
-          value
-        })
-        this.editing = false
-      }
-    },
-    cancelEdit () {
-      this.editing = false
-    }
   },
   filters: {
     pluralize: function (n, w) {
-      console.log('TODO')
       return filterFunction(n, w)
     },
     capitalize: function (s) {
