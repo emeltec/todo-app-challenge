@@ -84,90 +84,90 @@
 </template>
 
 <script>
-import vuex from "vuex";
-import Todo from "./components/Todo.vue";
+import vuex from 'vuex'
+import Todo from './components/Todo.vue'
 
 const filtersView = {
   all: function (todos) {
-    return todos;
+    return todos
   },
   active: function (todos) {
     return todos.filter(function (todo) {
-      return !todo.done;
-    });
+      return !todo.done
+    })
   },
   completed: function (todos) {
     return todos.filter(function (todo) {
-      return todo.done;
-    });
-  },
-};
+      return todo.done
+    })
+  }
+}
 
-function filterFunction(n, w) {
+function filterFunction (n, w) {
   if (n === 1) {
-    return w;
+    return w
   } else {
-    return w + "s";
+    return w + 's'
   }
 }
 
 export default {
   components: {
-    Todo,
+    Todo
   },
 
-  props: ["filter"],
+  props: ['filter'],
 
-  data() {
+  data () {
     return {
-      newTodo: "",
+      newTodo: '',
       filtersView: filtersView,
       visibility: this.filter,
       editing: false,
-      todoEditing: {},
-    };
+      todoEditing: {}
+    }
   },
 
   computed: {
-    todos() {
-      return this.$store.state.todos;
+    todos () {
+      return this.$store.state.todos
     },
-    allChecked() {
-      return this.todos.every((todo) => todo.done);
+    allChecked () {
+      return this.todos.every((todo) => todo.done)
     },
-    filteredTodos() {
-      return this.filtersView[this.visibility](this.todos);
+    filteredTodos () {
+      return this.filtersView[this.visibility](this.todos)
     },
-    remaining() {
-      return this.todos.filter((todo) => !todo.done).length;
+    remaining () {
+      return this.todos.filter((todo) => !todo.done).length
     },
-    progressPercentage() {
-      const len = this.todos.length;
-      return ((len - this.remaining) * 100) / len;
-    },
+    progressPercentage () {
+      const len = this.todos.length
+      return ((len - this.remaining) * 100) / len
+    }
   },
 
   methods: {
-    ...vuex.mapActions(["toggleAll", "clearCompleted"]),
+    ...vuex.mapActions(['toggleAll', 'clearCompleted']),
 
-    addTodo() {
-      const text = this.newTodo.trim();
+    addTodo () {
+      const text = this.newTodo.trim()
       if (text) {
-        this.$store.dispatch("addTodo", text);
+        this.$store.dispatch('addTodo', text)
       }
-      this.newTodo = "";
-    },
+      this.newTodo = ''
+    }
   },
 
   filters: {
     pluralize: function (n, w) {
-      return filterFunction(n, w);
+      return filterFunction(n, w)
     },
     capitalize: function (s) {
-      return s.charAt(0).toUpperCase() + s.slice(1);
-    },
-  },
-};
+      return s.charAt(0).toUpperCase() + s.slice(1)
+    }
+  }
+}
 </script>
 
 <style lang="stylus">

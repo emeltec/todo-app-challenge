@@ -48,45 +48,45 @@
 </template>
 
 <script>
-import store from "../../store";
+import store from '../../store'
 
 export default {
-  name: "Todo",
+  name: 'Todo',
   props: {
     todo: {
-      text: "",
-    },
+      text: ''
+    }
   },
 
-  data() {
+  data () {
     return {
-      editing: false,
-    };
+      editing: false
+    }
   },
 
   methods: {
-    doneEdit(e) {
-      const value = e.target.value.trim();
-      const todo = this.todo;
+    doneEdit (e) {
+      const value = e.target.value.trim()
+      const todo = this.todo
       if (!value) {
-        this.removeTodo(todo);
+        this.removeTodo(todo)
       } else if (this.editing) {
-        store.dispatch("editTodo", { todo, value });
-        this.editing = false;
+        store.dispatch('editTodo', { todo, value })
+        this.editing = false
       }
     },
 
-    toggleTodo(todo) {
-      store.dispatch("toggleTodo", todo);
+    toggleTodo (todo) {
+      store.dispatch('toggleTodo', todo)
     },
 
-    removeTodo(todo) {
-      store.dispatch("removeTodo", todo);
+    removeTodo (todo) {
+      store.dispatch('removeTodo', todo)
     },
 
-    cancelEdit() {
-      this.editing = false;
-    },
-  },
-};
+    cancelEdit () {
+      this.editing = false
+    }
+  }
+}
 </script>
