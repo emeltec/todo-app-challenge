@@ -26,7 +26,6 @@ function beforeEachRouter (to, from, next) {
   } else {
     return next('/all')
   }
-  return next('/all')
 }
 router.beforeEach(function (to, from, next) { return beforeEachRouter(to, from, next) })
 

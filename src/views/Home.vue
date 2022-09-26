@@ -13,10 +13,7 @@
                 color="primary"
                 v-if="todos.length > 0"
               ></v-checkbox>
-              <v-icon
-                color="primary"
-                v-else
-              >check</v-icon>
+              <v-icon color="primary" v-else>check</v-icon>
             </v-list-tile-action>
             <v-text-field
               :label="'New todo input'"
@@ -37,10 +34,10 @@
       </v-card>
       <!-- main -->
       <v-card class="mt-3" v-show="todos.length">
-        <v-progress-linear class="my-0" v-model="progressPercentage"/>
+        <v-progress-linear class="my-0" v-model="progressPercentage" />
         <v-card-actions class="px-3" v-show="todos.length">
           <span class="primary--text">
-            {{ remaining }} {{ remaining | pluralize('item') }} left
+            {{ remaining }} {{ remaining | pluralize("item") }} left
           </span>
           <v-spacer></v-spacer>
           <v-btn-toggle
@@ -87,118 +84,129 @@
 </template>
 
 <script>
-import vuex from 'vuex'
-import Todo from './components/Todo.vue'
+import vuex from "vuex";
+import Todo from "./components/Todo.vue";
 
 const filtersView = {
   all: function (todos) {
-    return todos
+    return todos;
   },
   active: function (todos) {
     return todos.filter(function (todo) {
-      return !todo.done
-    })
+      return !todo.done;
+    });
   },
   completed: function (todos) {
     return todos.filter(function (todo) {
-      return todo.done
-    })
-  }
-}
+      return todo.done;
+    });
+  },
+};
 
-function filterFunction (n, w) {
+function filterFunction(n, w) {
   if (n === 1) {
-    return w
+    return w;
   } else {
-    return (w + 's')
+    return w + "s";
   }
 }
 
 export default {
   components: {
-    Todo
+    Todo,
   },
 
-  props: ['filter'],
+  props: ["filter"],
 
-  data () {
+  data() {
     return {
-      newTodo: '',
+      newTodo: "",
       filtersView: filtersView,
       visibility: this.filter,
       editing: false,
-      todoEditing: {}
-    }
+      todoEditing: {},
+    };
   },
 
   computed: {
-    todos () {
-      return this.$store.state.todos
+    todos() {
+      return this.$store.state.todos;
     },
-    allChecked () {
-      return this.todos.every(todo => todo.done)
+    allChecked() {
+      return this.todos.every((todo) => todo.done);
     },
-    filteredTodos () {
-      return this.filtersView[this.visibility](this.todos)
+    filteredTodos() {
+      return this.filtersView[this.visibility](this.todos);
     },
-    remaining () {
-      return this.todos.filter(todo => !todo.done).length
+    remaining() {
+      return this.todos.filter((todo) => !todo.done).length;
     },
-    progressPercentage () {
-      var len = this.todos.length
-      return ((len - this.remaining) * 100) / len
-    }
+    progressPercentage() {
+      const len = this.todos.length;
+      return ((len - this.remaining) * 100) / len;
+    },
   },
 
   methods: {
-    ...vuex.mapActions([
-      'toggleAll',
-      'clearCompleted',
-    ]),
+    ...vuex.mapActions(["toggleAll", "clearCompleted"]),
 
-    addTodo () {
-      var text = this.newTodo.trim()
+    addTodo() {
+      const text = this.newTodo.trim();
       if (text) {
-        this.$store.dispatch('addTodo', text)
+        this.$store.dispatch("addTodo", text);
       }
-      this.newTodo = ''
+      this.newTodo = "";
     },
   },
 
   filters: {
     pluralize: function (n, w) {
-      return filterFunction(n, w)
+      return filterFunction(n, w);
     },
     capitalize: function (s) {
-      return s.charAt(0).toUpperCase() + s.slice(1)
-    }
-  }
-}
+      return s.charAt(0).toUpperCase() + s.slice(1);
+    },
+  },
+};
 </script>
 
 <style lang="stylus">
-h1
-  opacity: 0.3
-.v-text-field .v-input__slot
-  padding: 0 !important
+h1 {
+  opacity: 0.3;
+}
 
-.todo-item
-  .v-list__tile
-    height: auto
-    padding-top: 12px
-    padding-bottom: 12px
-  &.editing .v-list__tile
-    height: 48px
+.v-text-field .v-input__slot {
+  padding: 0 !important;
+}
 
-footer
-  margin: 65px auto 0
-  color: #bfbfbf
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5)
-  p
-    line-height: 1
-  a
-    color: inherit
-    text-decoration: none
-    &:hover
-      text-decoration: underline
+.todo-item {
+  .v-list__tile {
+    height: auto;
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+
+  &.editing .v-list__tile {
+    height: 48px;
+  }
+}
+
+footer {
+  margin: 65px auto 0;
+  color: #bfbfbf;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+
+  p {
+    line-height: 1;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
 </style>

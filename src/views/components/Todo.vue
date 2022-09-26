@@ -48,14 +48,13 @@
 </template>
 
 <script>
-import vuex from 'vuex'
-import store from '../../store'
+import store from "../../store";
 
 export default {
   name: "Todo",
   props: {
     todo: {
-      text: ''
+      text: "",
     },
   },
 
@@ -67,26 +66,26 @@ export default {
 
   methods: {
     doneEdit(e) {
-      var value = e.target.value.trim()
-      var todo = this.todo
+      const value = e.target.value.trim();
+      const todo = this.todo;
       if (!value) {
-        this.removeTodo(todo)
+        this.removeTodo(todo);
       } else if (this.editing) {
-        store.dispatch('editTodo', { todo, value })
-        this.editing = false
+        store.dispatch("editTodo", { todo, value });
+        this.editing = false;
       }
     },
 
     toggleTodo(todo) {
-      store.dispatch('toggleTodo', todo)
+      store.dispatch("toggleTodo", todo);
     },
 
     removeTodo(todo) {
-      store.dispatch('removeTodo', todo)
+      store.dispatch("removeTodo", todo);
     },
 
-    cancelEdit () {
-      this.editing = false
+    cancelEdit() {
+      this.editing = false;
     },
   },
 };

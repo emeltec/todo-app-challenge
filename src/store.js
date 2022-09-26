@@ -5,8 +5,8 @@ Vue.use(Vuex)
 
 const STORAGE_KEY = 'vuetify-todos'
 
-var parse = function () {
-  var toParse = ''
+const parse = function () {
+  let toParse = ''
   if (window.localStorage.getItem(STORAGE_KEY)) {
     toParse = window.localStorage.getItem(STORAGE_KEY)
   } else {

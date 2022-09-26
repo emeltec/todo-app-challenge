@@ -10,8 +10,7 @@ describe('Store', () => {
     const todo = { uid: 1, text: 'Tarea 1', done: false }
     st.state.todos = []
     st.state.todos.push(todo)
-    
+
     expect(st.state.todos).toEqual([todo])
   })
 })
-
