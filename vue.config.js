@@ -18,5 +18,6 @@ module.exports = {
         }
       }]
     }
-  }
+  },
+  publicPath: '/todo-app-challenge'
 }
