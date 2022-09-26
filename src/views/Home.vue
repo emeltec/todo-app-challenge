@@ -57,7 +57,7 @@
               color="primary"
               flat
               small
-              v-for="(val, key) in filters"
+              v-for="(val, key) in filtersView"
             >
               {{ key | capitalize }}
             </v-btn>
@@ -90,7 +90,7 @@
 import vuex from 'vuex'
 import Todo from './components/Todo.vue'
 
-const filters = {
+const filtersView = {
   all: function (todos) {
     return todos
   },
@@ -118,16 +118,19 @@ export default {
   components: {
     Todo
   },
+
   props: ['filter'],
+
   data () {
     return {
       newTodo: '',
-      filters: filters,
+      filtersView: filtersView,
       visibility: this.filter,
       editing: false,
       todoEditing: {}
     }
   },
+
   computed: {
     todos () {
       return this.$store.state.todos
@@ -136,7 +139,7 @@ export default {
       return this.todos.every(todo => todo.done)
     },
     filteredTodos () {
-      return filters[this.visibility](this.todos)
+      return this.filtersView[this.visibility](this.todos)
     },
     remaining () {
       return this.todos.filter(todo => !todo.done).length
@@ -146,13 +149,11 @@ export default {
       return ((len - this.remaining) * 100) / len
     }
   },
+
   methods: {
     ...vuex.mapActions([
       'toggleAll',
       'clearCompleted',
-      'editTodo',
-      'removeTodo',
-      'toggleTodo'
     ]),
 
     addTodo () {
@@ -163,6 +164,7 @@ export default {
       this.newTodo = ''
     },
   },
+
   filters: {
     pluralize: function (n, w) {
       return filterFunction(n, w)

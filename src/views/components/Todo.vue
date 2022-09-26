@@ -49,6 +49,7 @@
 
 <script>
 import vuex from 'vuex'
+import store from '../../store'
 
 export default {
   name: "Todo",
@@ -65,26 +66,23 @@ export default {
   },
 
   methods: {
-    ...vuex.mapActions([
-      "toggleAll",
-      "clearCompleted",
-      "editTodo",
-      "removeTodo",
-      "toggleTodo",
-    ]),
-
     doneEdit(e) {
       var value = e.target.value.trim()
       var todo = this.todo
       if (!value) {
         this.removeTodo(todo)
       } else if (this.editing) {
-        this.editTodo({
-          todo,
-          value
-        })
+        store.dispatch('editTodo', { todo, value })
         this.editing = false
       }
+    },
+
+    toggleTodo(todo) {
+      store.dispatch('toggleTodo', todo)
+    },
+
+    removeTodo(todo) {
+      store.dispatch('removeTodo', todo)
     },
 
     cancelEdit () {
